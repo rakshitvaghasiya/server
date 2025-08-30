@@ -1,20 +1,18 @@
+// connection.js
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
-const uri = process.env.MONGO_URI; // from .env
-let db;
+const client = new MongoClient(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-async function connectDB(app) {
-  try {
-    const client = new MongoClient(uri);
+async function connectDB() {
+  if (!client.topology?.isConnected()) {
     await client.connect();
     console.log("✅ Connected to MongoDB Atlas");
-
-    db = client.db("rentcar"); 
-    app.locals.db = db;   // here we can safely attach db to app
-  } catch (err) {
-    console.error("❌ DB connection failed:", err);
   }
+  return client.db("your_db_name"); // 👉 replace with your DB name
 }
 
 module.exports = connectDB;
