@@ -20,6 +20,13 @@ app.use(express.json());
     console.error("❌ Could not connect to DB:", err.message);
   }
 })();
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is running on Render!");
+});
+
+app.get("/ping", (req, res) => {
+  res.json({ status: "success", message: "pong!" });
+});
 
 // ✅ Routes
 app.use("/user", userRoutes);
